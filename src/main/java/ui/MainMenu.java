@@ -1,7 +1,12 @@
 package ui;
 
+import controllers.ReadXML;
+import models.Car;
+import models.Dealership;
 import myLib.UserMethods;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Scanner;
 
@@ -19,7 +24,7 @@ public class MainMenu {
             userMethods.myPrinter("2. Read XML file using SAX");
             userMethods.myPrinter("3. Read XML file using JAXB");
             userMethods.myPrinter("4. Write XML file using JAXB");
-            userMethods.myPrinter("0. Salir");
+            userMethods.myPrinter("0. Exit.");
             processOption(requestOption());
         }while(!exitMenu);
     }
@@ -33,6 +38,17 @@ public class MainMenu {
             case "0" -> exitMenu = true;
             case "1" -> {
                 Path p = userMethods.fileToRead("Introduce the path to the file to be read with DOM: ");
+                ReadXML readXML = new ReadXML();
+                try {
+                    Dealership myDealership = readXML.readDealearshipxml(p);
+                    for (Car car : myDealership.getCars()){
+                        userMethods.myPrinter(car.getBrand());
+                    }
+                } catch (IOException e) {
+                    userMethods.myPrinter("Something went wrong reading the file.");
+                } catch (SAXException e) {
+                    userMethods.myPrinter("The xml file does not match the requirements.");
+                }
 
             }
             case "2" -> {
