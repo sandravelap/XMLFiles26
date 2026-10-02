@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-public class ReadXML {
+public class ReadXMLDOM {
     public Dealership readDealearshipxml (Path p) throws IOException, SAXException {
         Dealership myDealership = new Dealership();
         myDealership.setCars(new ArrayList<>());

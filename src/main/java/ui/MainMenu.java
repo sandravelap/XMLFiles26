@@ -1,11 +1,13 @@
 package ui;
 
-import controllers.ReadXML;
+import controllers.ReadXMLDOM;
+import controllers.ReadXMLSAX;
 import models.Car;
 import models.Dealership;
 import myLib.UserMethods;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -38,9 +40,9 @@ public class MainMenu {
             case "0" -> exitMenu = true;
             case "1" -> {
                 Path p = userMethods.fileToRead("Introduce the path to the file to be read with DOM: ");
-                ReadXML readXML = new ReadXML();
+                ReadXMLDOM readXMLDOM = new ReadXMLDOM();
                 try {
-                    Dealership myDealership = readXML.readDealearshipxml(p);
+                    Dealership myDealership = readXMLDOM.readDealearshipxml(p);
                     for (Car car : myDealership.getCars()){
                         userMethods.myPrinter(car.getBrand());
                     }
@@ -53,6 +55,19 @@ public class MainMenu {
             }
             case "2" -> {
                 Path p = userMethods.fileToRead("Introduce the path to the file to be read with SAX: ");
+                ReadXMLSAX readXMLSAX = new ReadXMLSAX();
+                try {
+                    Dealership myDealershipSAX = readXMLSAX.saxController(p);
+                    for (Car car : myDealershipSAX.getCars()){
+                        userMethods.myPrinter(car.getBrand());
+                    }
+                } catch (ParserConfigurationException e) {
+                    userMethods.myPrinter("The handler does not match the file.");
+                } catch (SAXException e) {
+                    userMethods.myPrinter("SAX Exception");
+                } catch (IOException e) {
+                    userMethods.myPrinter("The file can not be read.");
+                }
 
             }
             case "3" -> {
