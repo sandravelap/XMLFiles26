@@ -1,7 +1,9 @@
 package ui;
 
 import controllers.ReadXMLDOM;
+import controllers.ReadXMLJAXB;
 import controllers.ReadXMLSAX;
+import jakarta.xml.bind.JAXBException;
 import models.Car;
 import models.Dealership;
 import myLib.UserMethods;
@@ -72,6 +74,13 @@ public class MainMenu {
             }
             case "3" -> {
                 Path p = userMethods.fileToRead("Introduce the path to the file to be read with JAXB: ");
+                ReadXMLJAXB readXMLJAXB = new ReadXMLJAXB();
+                try {
+                    Dealership dealershipJAXB = readXMLJAXB.readDealarship(p);
+                    userMethods.myPrinter("Data loaded.");
+                } catch (JAXBException e) {
+                    userMethods.myPrinter("The XML File does not match the requirements.");
+                }
             }
             case "4" -> {
                 Path p = userMethods.fileToWrite("Introduce the path for writing the file: ");
