@@ -3,6 +3,7 @@ package ui;
 import controllers.ReadXMLDOM;
 import controllers.ReadXMLJAXB;
 import controllers.ReadXMLSAX;
+import controllers.WriteXMLJAXB;
 import jakarta.xml.bind.JAXBException;
 import models.Car;
 import models.Dealership;
@@ -16,7 +17,6 @@ import java.util.Scanner;
 
 
 public class MainMenu {
-
     private Scanner scanner = new Scanner(System.in);
     private boolean exitMenu = false;
 
@@ -26,8 +26,9 @@ public class MainMenu {
             userMethods.myPrinter("Choose an option: ");
             userMethods.myPrinter("1. Read XML file using DOM");
             userMethods.myPrinter("2. Read XML file using SAX");
-            userMethods.myPrinter("3. Read XML file using JAXB");
+            userMethods.myPrinter("3. Read XML Dealership file using JAXB");
             userMethods.myPrinter("4. Write XML file using JAXB");
+            userMethods.myPrinter("5. Read and write XML BookCatalog file using JAXB");
             userMethods.myPrinter("0. Exit.");
             processOption(requestOption());
         }while(!exitMenu);
@@ -83,8 +84,18 @@ public class MainMenu {
                 }
             }
             case "4" -> {
-                Path p = userMethods.fileToWrite("Introduce the path for writing the file: ");
-
+                Path p = userMethods.pathToCreate();
+                WriteXMLJAXB writeXMLJAXB = new WriteXMLJAXB();
+                String writingJAXB = writeXMLJAXB.writeDealership(p);
+            }
+            case "5" -> {
+                Path p = userMethods.fileToRead("Introduce the path to the file to be read with JAXB: ");
+                ReadXMLJAXB readXMLJAXB = new ReadXMLJAXB();
+                try {
+                    readXMLJAXB.readWriteBookCatalog(p);
+                } catch (JAXBException e) {
+                    userMethods.myPrinter("The file does not match the requirements. "+e.getMessage());
+                }
             }
             default -> userMethods.myPrinter("Wrong option.");
         }
